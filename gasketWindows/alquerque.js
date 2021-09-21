@@ -45,10 +45,10 @@ window.onload = function init()
 };
 
 function gameboard() {
-    var x = -.8;
-    var y = .2;
-    var xdist = .2;
-    var boardheight = 1.6;
+    var x = -1;
+    var y = -1;
+    var xdist = .5;
+    var boardheight = 2;
     for (i = 0; i < 5; i++) {
         points.push(vec2(i * xdist + x, y));
         points.push(vec2(i * xdist + x, y + boardheight));
@@ -57,6 +57,30 @@ function gameboard() {
         points.push(vec2(x, i*xdist + y));
         points.push(vec2(x+boardheight, i*xdist + y));
     }
+    /*for(i = 0; i < 2; i++){
+        points.push(vec2(i-1, i));
+        points.push(vec2(i, i-1));
+        points.push(vec2(i-1, i));
+        points.push(vec2(i, i+1));
+    }*/ 
+    points.push(vec2(-1, 0));
+    points.push(vec2(0, -1));
+
+    points.push(vec2(-1, 1));
+    points.push(vec2(1, -1));
+
+    points.push(vec2(0, 1));
+    points.push(vec2(1, -0));
+
+    points.push(vec2(0, 1));
+    points.push(vec2(-1, 0));
+
+    points.push(vec2(1, 1));
+    points.push(vec2(-1, -1));
+
+    points.push(vec2(1, 0));
+    points.push(vec2(0, -1));
+
 } 
 
 
