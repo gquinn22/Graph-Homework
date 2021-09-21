@@ -5,6 +5,7 @@
  * */
 var gl;
 var points = [];
+var squares = [23];
 
 var NumPoints = 5000;
 
@@ -57,12 +58,9 @@ function gameboard() {
         points.push(vec2(x, i*xdist + y));
         points.push(vec2(x+boardheight, i*xdist + y));
     }
-    /*for(i = 0; i < 2; i++){
-        points.push(vec2(i-1, i));
-        points.push(vec2(i, i-1));
-        points.push(vec2(i-1, i));
-        points.push(vec2(i, i+1));
-    }*/ 
+    /*
+     * Now push points to draw diagonals
+    */ 
     points.push(vec2(-1, 0));
     points.push(vec2(0, -1));
 
@@ -88,4 +86,15 @@ function gameboard() {
 function render() {
     gl.clear( gl.COLOR_BUFFER_BIT );
     gl.drawArrays( gl.LINES, 0, points.length );
+}
+
+function square(position, isShown, color) {
+    this.position = position;
+    this.isShown = isShown;
+    this.color = color;
+}
+
+function modSquare(position, isShown, color) {
+    var p = new square(position, isShown, color);
+    squares[position] = p;
 }
