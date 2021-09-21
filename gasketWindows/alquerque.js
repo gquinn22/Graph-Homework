@@ -53,6 +53,10 @@ function gameboard() {
         points.push(vec2(i * xdist + x, y));
         points.push(vec2(i * xdist + x, y + boardheight));
     }
+    for(i = 0; i < 5; i++) {
+        points.push(vec2(x, i*xdist + y));
+        points.push(vec2(x+boardheight, i*xdist + y));
+    }
 } 
 
 
