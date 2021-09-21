@@ -5,9 +5,8 @@
  * */
 var gl;
 var points = [];
-var squares = [23];
-
-var NumPoints = 5000;
+var squares = [];
+var numSquares = 24;
 
 window.onload = function init()
 {
@@ -17,9 +16,15 @@ window.onload = function init()
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
     //
-    //  Calling spiral to set up points array
+    //  Calling Gameboard to initialize gameboard
     //
     gameboard();
+
+    /*for (i = 0; i < numSquares; i++) {
+        squares[i] = new square(vec2(, 1, green);
+    }*/
+
+    //TODO: FIGURE THIS OUT, IT'S NOT HARD
     
    
     gl.viewport( 0, 0, canvas.width, canvas.height );
