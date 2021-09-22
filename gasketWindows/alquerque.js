@@ -66,23 +66,23 @@ function gameboard() {
     /*
      * Now push points to draw diagonals
     */ 
-    points.push(vec2(-1, 0));
-    points.push(vec2(0, -1));
+    points.push(vec2(-.8, 0));
+    points.push(vec2(0, -.8));
 
-    points.push(vec2(-1, 1));
-    points.push(vec2(1, -1));
+    points.push(vec2(-.8, .8));
+    points.push(vec2(.8, -.8));
 
-    points.push(vec2(0, 1));
-    points.push(vec2(1, -0));
+    points.push(vec2(0, .8));
+    points.push(vec2(.8, -0));
 
-    points.push(vec2(0, 1));
-    points.push(vec2(-1, 0));
+    points.push(vec2(0, .8));
+    points.push(vec2(-.8, 0));
 
-    points.push(vec2(1, 1));
-    points.push(vec2(-1, -1));
+    points.push(vec2(.8, .8));
+    points.push(vec2(-.8, -.8));
 
-    points.push(vec2(1, 0));
-    points.push(vec2(0, -1));
+    points.push(vec2(.8, 0));
+    points.push(vec2(0, -.8));
 
 } 
 
