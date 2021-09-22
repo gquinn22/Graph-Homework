@@ -5,6 +5,7 @@
  * */
 var gl;
 var points = [];
+var pieces = [];
 var squares = [];
 var numSquares = 24;
 
@@ -19,6 +20,10 @@ window.onload = function init()
     //  Calling Gameboard to initialize gameboard
     //
     gameboard();
+
+    //Call functions to set up pieces
+    posInit();
+    showSquares();
 
     /*for (i = 0; i < numSquares; i++) {
         squares[i] = new square(vec2(, 1, green);
@@ -48,6 +53,21 @@ window.onload = function init()
     gl.enableVertexAttribArray( vPosition );
 
     render();
+
+    //NEW BUFFER TO SHOW PIECES 
+
+    /*var pieceBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, pieceBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(pieces), gl.STATIC_DRAW );
+
+    // Associate out shader variables with our data buffer
+    
+    var vPosition1 = gl.getAttribLocation( program, "vPosition1" );
+    gl.vertexAttribPointer( vPosition1, 2, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vPosition1 );
+
+    render();       NONWORKING */
+
 };
 
 function gameboard() {
@@ -106,19 +126,28 @@ function modSquare(pnum, position, isShown, color) {
 
 function posInit(){
     var curPos = 0;
-    for(y = -.8; y < 1; y + .4){
-        for(x = -.8; x < 1; x + .4){
+    for(y = -.8; y < 1; y += .4){
+        for(x = -.8; x < 1; x += .4){
             var p = new square(vec2(x, y), 1, 'green');
+            console.log(p.position);
             squares.push(p);
         }
     }
 }
 
 function showSquares(){
+    var topLeft = vec2(-.02, .02);
+    var botLeft = vec2(-.02, -.02);
+    var botRight = vec2(.02, -.02);
+    var topRight = vec2(.02, .02);
     for(i = 0; i < numSquares; i++){
         if(squares[i].isShown == 1){
-            points.push(vec2(squares[i].position));
-            //TODO: Possibly wait to vectorize square position until we are utilizing the x nd y???
+            pieces.push(squares[i].position.add(topLeft));
+            pieces.push(squares[i].position.add(botLeft));
+            pieces.push(squares[i].position.add(botRight));
+            pieces.push(squares[i].position.add(topLeft));
+            pieces.push(squares[i].position.add(topRight));
+            pieces.push(squares[i].position.add(botRight));
         }
     }
 }
