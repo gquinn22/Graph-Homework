@@ -53,7 +53,7 @@ window.onload = function init()
 function gameboard() {
     var x = -.8;
     var y = -.8;
-    var xdist = .32;
+    var xdist = .4;
     var boardheight = 1.6;
     for (i = 0; i < 5; i++) {
         points.push(vec2(i * xdist + x, y));
