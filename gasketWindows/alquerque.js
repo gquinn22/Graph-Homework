@@ -99,7 +99,26 @@ function square(position, isShown, color) {
     this.color = color;
 }
 
-function modSquare(pnum,position, isShown, color) {
+function modSquare(pnum, position, isShown, color) {
     var p = new square(position, isShown, color);
     squares[pnum] = p;
+}
+
+function posInit(){
+    var curPos = 0;
+    for(y = -.8; y < 1; y + .4){
+        for(x = -.8; x < 1; x + .4){
+            var p = new square(vec2(x, y), 1, 'green');
+            squares.push(p);
+        }
+    }
+}
+
+function showSquares(){
+    for(i = 0; i < numSquares; i++){
+        if(squares[i].isShown == 1){
+            points.push(vec2(squares[i].position));
+            //TODO: Possibly wait to vectorize square position until we are utilizing the x nd y???
+        }
+    }
 }
