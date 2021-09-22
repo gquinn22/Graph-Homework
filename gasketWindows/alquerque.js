@@ -51,10 +51,10 @@ window.onload = function init()
 };
 
 function gameboard() {
-    var x = -1;
-    var y = -1;
-    var xdist = .5;
-    var boardheight = 2;
+    var x = -.8;
+    var y = -.8;
+    var xdist = .32;
+    var boardheight = 1.6;
     for (i = 0; i < 5; i++) {
         points.push(vec2(i * xdist + x, y));
         points.push(vec2(i * xdist + x, y + boardheight));
@@ -99,7 +99,7 @@ function square(position, isShown, color) {
     this.color = color;
 }
 
-function modSquare(position, isShown, color) {
+function modSquare(pnum,position, isShown, color) {
     var p = new square(position, isShown, color);
-    squares[position] = p;
+    squares[pnum] = p;
 }
