@@ -218,11 +218,11 @@ function mouseResponse(event){
 
         if(t[0] <= xMax && t[0] >= xMin && t[1] <= yMax && t[1] >= yMin){
             console.log("Location " + (i+1) + " selected.");
-            //if(mouseResponse == 0){
+            if(mouseResponse == 0){
             tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
             curPlayer = tableSquare.color;
             squares[i] = tableSquare;
-           /* } else {
+            } else {
                 if(tableSquare.isShown == 1){
                     curPlayer = tableSquare.color;
                 }else {
@@ -230,9 +230,8 @@ function mouseResponse(event){
                     tableSquare.color = curPlayer;
                 }
                 squares[i] = tableSquare;
-            }*/
-            //mouseResponse = ;
+            }
         }
     }
-
+    mouseResponse = (mouseResponse == 0) ? 1 : 0;
 }
