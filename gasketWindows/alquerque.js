@@ -115,7 +115,7 @@ function render() {
         tableSquare = squares[i];
         tablePos = tableSquare.position;
         if(tableSquare.isShown == 1){
-            gl.drawArrays(gl.TRIANGLES, (points.length - 1) + i*6, 6);
+            gl.drawArrays(gl.TRIANGLES, (points.length) + i*6, 6);
         }
     }
 
