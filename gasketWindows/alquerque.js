@@ -13,7 +13,8 @@ var clickToggle = false;
 var playerToggle = 1;
 var colors = [
     vec4(0.0, 1.0, 0.0, 1.0), //green
-    vec4(0.0, 0.0, 1.0, 1.0)  //blue
+    vec4(0.0, 0.0, 1.0, 1.0),  //blue
+    vec4(1.0, 0.0, 0.0, 1.0)
 ];
 var vColorLoc;
 
@@ -62,6 +63,8 @@ window.onload = function init()
     gl.vertexAttribPointer( vPosition, 2, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
+    vColorLoc = gl.getUniformLocation( program, "vColor")
+
     canvas.addEventListener("click", mouseResponse);
     //showSquares();
     render();
@@ -107,6 +110,8 @@ function gameboard() {
 
 function render() {
     gl.clear( gl.COLOR_BUFFER_BIT );
+    //vColorLoc = gl.getUniformLocation( program, "vColor");
+    gl.uniform4fv(vColorLoc, colors[2]);
     gl.drawArrays( gl.LINES, 0, 32 );
 
     var tableSquare;
@@ -116,6 +121,7 @@ function render() {
         tableSquare = squares[i];
         tablePos = tableSquare.position;
         if(tableSquare.isShown == 1){
+            gl.uniform4fv(vColorLoc, colors[tableSquare.color]);
             gl.drawArrays(gl.TRIANGLES, (32) + i*6, 6);
         }
     }
