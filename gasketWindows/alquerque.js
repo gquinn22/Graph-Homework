@@ -71,7 +71,6 @@ window.onload = function init()
         playerToggle = 1;
         curPlayer = 0;
     }
-    //showSquares();
     render();
 
 };
@@ -164,7 +163,6 @@ function posInit(){
                     p.color = 1;
                 }
             }
-            //console.log(p.position);
             squares.push(p);
         }
     }
@@ -172,7 +170,6 @@ function posInit(){
 
 function showSquares(){
     var topLeft = vec2(-.02, .02);
-    //console.log(topLeft);
     var botLeft = vec2(-.02, -.02);
     var botRight = vec2(.02, -.02);
     var topRight = vec2(.02, .02);
