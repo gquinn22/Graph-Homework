@@ -47,6 +47,10 @@ window.onload = function init()
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
 
+    /*var posBuff = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, posBuff );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(positions), gl.STATIC_DRAW );
+*/
     // Associate out shader variables with our data buffer
     
     var vPosition = gl.getAttribLocation( program, "vPosition" );
@@ -54,7 +58,7 @@ window.onload = function init()
     gl.enableVertexAttribArray( vPosition );
 
     canvas.addEventListener("click", mouseResponse);
-    //showSquares();
+    showSquares();
     render();
 
 };
@@ -114,7 +118,9 @@ function render() {
     gl.vertexAttribPointer( vPosition, 2, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
-    gl.drawArrays(gl.TRIANGLES, 0, positions.length);
+    //gl.drawArrays( gl.LINES, 0, points.length );
+    //gl.drawArrays(gl.TRIANGLES, points.length + 1, positions.length);
+    gl.drawArrays( gl.TRIANGLES, 0, positions.length ); //draws pieces at specified positions......
 
     //window.requestAnimFrame(render);
 }
