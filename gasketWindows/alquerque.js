@@ -7,11 +7,13 @@ var gl;
 var points = [];
 var positions = [];
 var squares = [];
+var squareColor = [];
 var numSquares = 25;
 var colors = [
     vec4(0.0, 1.0, 0.0, 1.0), //green
     vec4(0.0, 0.0, 1.0, 1.0)  //blue
 ];
+var vColorLoc;
 
 var canvas;
 
@@ -119,6 +121,8 @@ function render() {
     gl.enableVertexAttribArray( vPosition );
 
     //gl.drawArrays( gl.LINES, 0, points.length );
+
+
     //gl.drawArrays(gl.TRIANGLES, points.length + 1, positions.length);
     gl.drawArrays( gl.TRIANGLES, 0, positions.length ); //draws pieces at specified positions......
 
@@ -183,6 +187,7 @@ function showSquares(){
             positions.push(vec2(xCenter + .02, yCenter - .02));
             positions.push(vec2(xCenter + .02, yCenter + .02));
             positions.push(vec2(xCenter - .02, yCenter + .02));
+            squareColor.push(colors[tableSquare.color]);
         }    
     }
 }
