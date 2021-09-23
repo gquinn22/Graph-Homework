@@ -9,6 +9,8 @@ var positions = [];
 var squares = [];
 var squareColor = [];
 var numSquares = 25;
+var clickToggle = false;
+var playerToggle = 1;
 var colors = [
     vec4(0.0, 1.0, 0.0, 1.0), //green
     vec4(0.0, 0.0, 1.0, 1.0)  //blue
@@ -48,7 +50,7 @@ window.onload = function init()
     var bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(positions), gl.STATIC_DRAW);
+    //gl.bufferData( gl.ARRAY_BUFFER, flatten(positions), gl.STATIC_DRAW);
 
     /*var posBuff = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, posBuff );
@@ -99,14 +101,13 @@ function gameboard() {
 
     points.push(vec2(.8, 0));
     points.push(vec2(0, -.8));
-
 } 
 
 
 
 function render() {
     gl.clear( gl.COLOR_BUFFER_BIT );
-    gl.drawArrays( gl.LINES, 0, points.length );
+    gl.drawArrays( gl.LINES, 0, 32 );
 
     var tableSquare;
     var tablePos;
@@ -115,29 +116,9 @@ function render() {
         tableSquare = squares[i];
         tablePos = tableSquare.position;
         if(tableSquare.isShown == 1){
-            gl.drawArrays(gl.TRIANGLES, (points.length) + i*6, 6);
+            gl.drawArrays(gl.TRIANGLES, (32) + i*6, 6);
         }
     }
-
-    /*var program = initShaders( gl, "vertex-shader", "fragment-shader" );
-    gl.useProgram( program );
-    
-    var squareBuff = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, squareBuff );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(positions), gl.STATIC_DRAW );
-
-    // Associate out shader variables with our data buffer
-    
-    var vPosition = gl.getAttribLocation( program, "vPosition" );
-    gl.vertexAttribPointer( vPosition, 2, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( vPosition );
-
-    //gl.drawArrays( gl.LINES, 0, points.length );
-
-
-    //gl.drawArrays(gl.TRIANGLES, points.length + 1, positions.length);
-    gl.drawArrays( gl.TRIANGLES, 0, positions.length ); //draws pieces at specified positions......
-    */
     window.requestAnimFrame(render);
 }
 
@@ -192,23 +173,13 @@ function showSquares(){
         tablePos = tableSquare.position;
         xCenter = tablePos[0];
         yCenter = tablePos[1];
-        if(tableSquare.isShown == 1){
-            positions.push(vec2(xCenter - .02, yCenter - .02));
-            positions.push(vec2(xCenter - .02, yCenter + .02));
-            positions.push(vec2(xCenter + .02, yCenter - .02));
-            positions.push(vec2(xCenter + .02, yCenter - .02));
-            positions.push(vec2(xCenter + .02, yCenter + .02));
-            positions.push(vec2(xCenter - .02, yCenter + .02));
-            squareColor.push(colors[tableSquare.color]);
-        }/*else{
-            positions.push(vec2(xCenter - .02, yCenter - .02));
-            positions.push(vec2(xCenter - .02, yCenter + .02));
-            positions.push(vec2(xCenter + .02, yCenter - .02));
-            positions.push(vec2(xCenter + .02, yCenter - .02));  //This will ideally push a square of clear opacity, unless it is better to not push one at all
-            positions.push(vec2(xCenter + .02, yCenter + .02));
-            positions.push(vec2(xCenter - .02, yCenter + .02));
-            squareColor.push(colors[tableSquare.color]);
-        }*/ 
+        points.push(vec2(xCenter - .02, yCenter - .02));
+        points.push(vec2(xCenter - .02, yCenter + .02));
+        points.push(vec2(xCenter + .02, yCenter - .02));
+        points.push(vec2(xCenter + .02, yCenter - .02));
+        points.push(vec2(xCenter + .02, yCenter + .02));
+        points.push(vec2(xCenter - .02, yCenter + .02));
+        squareColor.push(colors[tableSquare.color]);
     }
 }
 
@@ -239,6 +210,7 @@ function mouseResponse(event){
 
         if(t[0] <= xMax && t[0] >= xMin && t[1] <= yMax && t[1] >= yMin){
             console.log("Location " + (i+1) + " selected.");
+            //if(mouseResponse)
             tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
             squares[i] = tableSquare;
             console.log(squares[i]);
