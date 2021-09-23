@@ -11,6 +11,7 @@ var squareColor = [];
 var numSquares = 25;
 var clickToggle = false;
 var playerToggle = 1;
+var curPlayer;
 var colors = [
     vec4(0.0, 1.0, 0.0, 1.0), //green
     vec4(0.0, 0.0, 1.0, 1.0),  //blue
@@ -205,6 +206,7 @@ function mouseResponse(event){
     var yMin;
     var tablePos;
     var tableSquare;
+    var tableColor;
 
     for(var i = 0; i < 25; i++){
         tableSquare = squares[i];
@@ -216,13 +218,21 @@ function mouseResponse(event){
 
         if(t[0] <= xMax && t[0] >= xMin && t[1] <= yMax && t[1] >= yMin){
             console.log("Location " + (i+1) + " selected.");
-            //if(mouseResponse)
+            //if(mouseResponse == 0){
             tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
+            curPlayer = tableSquare.color;
             squares[i] = tableSquare;
-            console.log(squares[i]);
+           /* } else {
+                if(tableSquare.isShown == 1){
+                    curPlayer = tableSquare.color;
+                }else {
+                    tableSquare.isShown = 1;
+                    tableSquare.color = curPlayer;
+                }
+                squares[i] = tableSquare;
+            }*/
+            //mouseResponse = ;
         }
     }
-    positions = [];
-    console.log(positions);
 
 }
