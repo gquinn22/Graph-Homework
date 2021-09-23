@@ -54,7 +54,7 @@ window.onload = function init()
     gl.enableVertexAttribArray( vPosition );
 
     canvas.addEventListener("click", mouseResponse);
-    showSquares();
+    //showSquares();
     render();
 
 };
@@ -208,7 +208,7 @@ function mouseResponse(event){
 
         if(t[0] <= xMax && t[0] >= xMin && t[1] <= yMax && t[1] >= yMin){
             console.log("Location " + (i+1) + " selected.");
-            tableSquare.isShown = 0;
+            tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
             squares[i] = tableSquare;
             console.log(squares[i]);
         }
