@@ -48,6 +48,7 @@ window.onload = function init()
     var bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(positions), gl.STATIC_DRAW);
 
     /*var posBuff = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, posBuff );
@@ -60,7 +61,7 @@ window.onload = function init()
     gl.enableVertexAttribArray( vPosition );
 
     canvas.addEventListener("click", mouseResponse);
-    showSquares();
+    //showSquares();
     render();
 
 };
@@ -107,7 +108,18 @@ function render() {
     gl.clear( gl.COLOR_BUFFER_BIT );
     gl.drawArrays( gl.LINES, 0, points.length );
 
-    var program = initShaders( gl, "vertex-shader", "fragment-shader" );
+    var tableSquare;
+    var tablePos;
+
+    for(var i = 0; i < 25; i++){
+        tableSquare = squares[i];
+        tablePos = tableSquare.position;
+        if(tableSquare.isShown == 1){
+            gl.drawArrays(gl.TRIANGLES, (points.length - 1) + i*6, 6);
+        }
+    }
+
+    /*var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
     
     var squareBuff = gl.createBuffer();
@@ -125,8 +137,8 @@ function render() {
 
     //gl.drawArrays(gl.TRIANGLES, points.length + 1, positions.length);
     gl.drawArrays( gl.TRIANGLES, 0, positions.length ); //draws pieces at specified positions......
-
-    //window.requestAnimFrame(render);
+    */
+    window.requestAnimFrame(render);
 }
 
 function square(position, isShown, color) {
@@ -188,7 +200,15 @@ function showSquares(){
             positions.push(vec2(xCenter + .02, yCenter + .02));
             positions.push(vec2(xCenter - .02, yCenter + .02));
             squareColor.push(colors[tableSquare.color]);
-        }    
+        }/*else{
+            positions.push(vec2(xCenter - .02, yCenter - .02));
+            positions.push(vec2(xCenter - .02, yCenter + .02));
+            positions.push(vec2(xCenter + .02, yCenter - .02));
+            positions.push(vec2(xCenter + .02, yCenter - .02));  //This will ideally push a square of clear opacity, unless it is better to not push one at all
+            positions.push(vec2(xCenter + .02, yCenter + .02));
+            positions.push(vec2(xCenter - .02, yCenter + .02));
+            squareColor.push(colors[tableSquare.color]);
+        }*/ 
     }
 }
 
