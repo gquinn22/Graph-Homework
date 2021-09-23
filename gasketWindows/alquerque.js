@@ -11,7 +11,7 @@ var squareColor = [];
 var numSquares = 25;
 var clickToggle = false;
 var playerToggle = 1;
-var curPlayer;
+var curPlayer = 0;
 var colors = [
     vec4(0.0, 1.0, 0.0, 1.0), //green
     vec4(0.0, 0.0, 1.0, 1.0),  //blue
@@ -206,7 +206,8 @@ function mouseResponse(event){
     var yMin;
     var tablePos;
     var tableSquare;
-    var tableColor;
+    var destSquare;
+    var destPos;
 
     for(var i = 0; i < 25; i++){
         tableSquare = squares[i];
@@ -218,7 +219,7 @@ function mouseResponse(event){
 
         if(t[0] <= xMax && t[0] >= xMin && t[1] <= yMax && t[1] >= yMin){
             console.log("Location " + (i+1) + " selected.");
-            if(mouseResponse == 0){
+            /*if(curPlayer == 0){
             tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
             curPlayer = tableSquare.color;
             squares[i] = tableSquare;
@@ -230,8 +231,41 @@ function mouseResponse(event){
                     tableSquare.color = curPlayer;
                 }
                 squares[i] = tableSquare;
+            }*/
+            if(curPlayer == 0){
+                if(!clickToggle){
+                    tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
+                    //curPlayer = tableSquare.color;
+                    squares[i] = tableSquare;
+                    clickToggle = !clickToggle;
+                } else {
+                    if(tableSquare.isShown == 0){
+                        tableSquare.isShown = 1;
+                        tableSquare.color = curPlayer;
+                        curPlayer = (curPlayer == 0) ? 1 : 0;
+                    }
+                    squares[i] = tableSquare;
+                    clickToggle = !clickToggle;
+                }
+            } else{
+                if(!clickToggle){
+                    tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
+                    //curPlayer = tableSquare.color;
+                    squares[i] = tableSquare;
+                    clickToggle = !clickToggle;
+                } else {
+                    if(tableSquare.isShown == 0){
+                        tableSquare.isShown = 1;
+                        tableSquare.color = curPlayer;
+                        curPlayer = (curPlayer == 1) ? 0 : 1;
+                    }
+                    squares[i] = tableSquare;
+                    clickToggle = !clickToggle;
+                }
             }
         }
     }
-    mouseResponse = (mouseResponse == 0) ? 1 : 0;
+    curPlayer = (curPlayer == 0) ? 1 : 0;
 }
+
+
