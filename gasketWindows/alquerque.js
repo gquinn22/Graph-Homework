@@ -198,7 +198,6 @@ function showSquares(){
 function mouseResponse(event){
 
     var t = vec2(2*event.clientX/canvas.width-1, 2*(canvas.height - event.clientY)/canvas.height-1);
-    //console.log(t);
 
     t[0] = t[0] - .03125;
     t[1] = t[1] + .03125;
@@ -211,8 +210,6 @@ function mouseResponse(event){
     var yMin;
     var tablePos;
     var tableSquare;
-    var destSquare;
-    var destPos;
 
     for(var i = 0; i < 25; i++){
         tableSquare = squares[i];
@@ -224,39 +221,23 @@ function mouseResponse(event){
 
         if(t[0] <= xMax && t[0] >= xMin && t[1] <= yMax && t[1] >= yMin){
             console.log("Location " + (i+1) + " selected.");
-            /*if(curPlayer == 0){
-            tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
-            curPlayer = tableSquare.color;
-            squares[i] = tableSquare;
-            } else {
-                if(tableSquare.isShown == 1){
-                    curPlayer = tableSquare.color;
-                }else {
-                    tableSquare.isShown = 1;
-                    tableSquare.color = curPlayer;
-                }
-                squares[i] = tableSquare;
-            }*/
             if(curPlayer == 0){
                 if(!clickToggle){
                     tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
-                    curPlayer = tableSquare.color;
-                    //place(i);
                     clickToggle = !clickToggle;
+                    heldPiece = squares[i];
                 } else {
                     if(tableSquare.isShown == 0){
                         tableSquare.isShown = 1;
                         tableSquare.color = curPlayer;
-                        //pickup(tablesquare, i);
                         curPlayer = (curPlayer == 0) ? 1 : 0;
+                        clickToggle = !clickToggle;
                     }
-                    //squares[i] = tableSquare;
-                    clickToggle = !clickToggle;
+                    
                 }
             } else{
                 if(!clickToggle){
                     tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
-                    //curPlayer = tableSquare.color;
                     squares[i] = tableSquare;
                     clickToggle = !clickToggle;
                 } else {
@@ -271,19 +252,6 @@ function mouseResponse(event){
             }
         }
     }
-    //curPlayer = (curPlayer == 0) ? 1 : 0;
 }
 
 
-function pickUp(square, position){
-    var last = position;
-    heldPiece = square;
-    square.isShown = 0;
-    squares[last] = square;
-}
-
-function place(position){
-    if(heldPiece != null){
-        squares[position] = heldPiece;
-    }
-}
