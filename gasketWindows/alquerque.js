@@ -117,7 +117,6 @@ function gameboard() {
 
 function render() {
     gl.clear( gl.COLOR_BUFFER_BIT );
-    //vColorLoc = gl.getUniformLocation( program, "vColor");
     gl.uniform4fv(vColorLoc, colors[2]);
     gl.drawArrays( gl.LINES, 0, 32 );
 
