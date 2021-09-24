@@ -195,7 +195,7 @@ function mouseResponse(event){
     var t = vec2(2*event.clientX/canvas.width-1, 2*(canvas.height - event.clientY)/canvas.height-1);
 
     t[0] = t[0] - .03125;
-    t[1] = t[1] + .03125;
+    t[1] = t[1] + .03125; //SCALING MOUSE POSITIONS FOR CORRECTNESS
 
     var xMax;
     var yMax;
