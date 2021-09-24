@@ -223,7 +223,7 @@ function mouseResponse(event){
                 heldPiece = tableSquare;
                 heldOrigin = i;
                 gameStart = true;
-            } else if(gameStart == true && tableSquare.isShown == 0){
+            } else if(gameStart == true && tableSquare.isShown == 0){ //if a turn is in session, and we are clicking an empty square
                 tempSquare = tableSquare;
                 tempSquare.isShown = 1;
                 tempSquare.color = heldPiece.color;
