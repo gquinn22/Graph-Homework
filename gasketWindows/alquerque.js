@@ -1,7 +1,7 @@
 /* Author: Griffin Quinn
  * Date: 9/24/21
  * Assignment: Assignment 2
- * Title: spiral.js
+ * Title: alquerque.js
  * */
 var gl;
 var points = [];
