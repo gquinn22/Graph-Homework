@@ -10,6 +10,7 @@ var squares = [];
 var squareColor = [];
 var numSquares = 25;
 var clickToggle = false;
+var gameStart = false;
 var playerToggle = 1;
 var curPlayer = 0;
 var colors = [
@@ -18,7 +19,8 @@ var colors = [
     vec4(1.0, 0.0, 0.0, 1.0)
 ];
 var vColorLoc;
-var heldPiece = new square();
+var heldPiece;
+var heldOrigin;
 
 var canvas;
 
@@ -70,6 +72,7 @@ window.onload = function init()
         clickToggle = false;
         playerToggle = 1;
         curPlayer = 0;
+        gameStart = false;
     }
     render();
 
@@ -169,10 +172,6 @@ function posInit(){
 }
 
 function showSquares(){
-    var topLeft = vec2(-.02, .02);
-    var botLeft = vec2(-.02, -.02);
-    var botRight = vec2(.02, -.02);
-    var topRight = vec2(.02, .02);
     var tableSquare = new square(vec2(1,1), 1, 'green');
     var tablePos = vec2(1,1);
     var xCenter;
@@ -199,14 +198,13 @@ function mouseResponse(event){
     t[0] = t[0] - .03125;
     t[1] = t[1] + .03125;
 
-    console.log(t);
-
     var xMax;
     var yMax;
     var xMin;
     var yMin;
     var tablePos;
     var tableSquare;
+    var tempSquare;
 
     for(var i = 0; i < 25; i++){
         tableSquare = squares[i];
@@ -218,37 +216,24 @@ function mouseResponse(event){
 
         if(t[0] <= xMax && t[0] >= xMin && t[1] <= yMax && t[1] >= yMin){
             console.log("Location " + (i+1) + " selected.");
-            if(curPlayer == 0){
-                if(!clickToggle){
-                    tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
-                    clickToggle = !clickToggle;
-                    heldPiece = squares[i];
-                } else {
-                    if(tableSquare.isShown == 0){
-                        tableSquare.isShown = 1;
-                        tableSquare.color = curPlayer;
-                        curPlayer = (curPlayer == 0) ? 1 : 0;
-                        clickToggle = !clickToggle;
-                    }
-                    
-                }
-            } else{
-                if(!clickToggle){
-                    tableSquare.isShown = (tableSquare.isShown == 0) ? 1 : 0;
-                    squares[i] = tableSquare;
-                    clickToggle = !clickToggle;
-                } else {
-                    if(tableSquare.isShown == 0){
-                        tableSquare.isShown = 1;
-                        tableSquare.color = curPlayer;
-                        curPlayer = (curPlayer == 1) ? 0 : 1;
-                    }
-                    squares[i] = tableSquare;
-                    clickToggle = !clickToggle;
-                }
+            if(gameStart == true && i == heldOrigin){
+                tableSquare.isShown = 0;
+                squares[i] = tableSquare;
+            }
+            if(tableSquare.isShown == 1 && gameStart == false){
+                heldPiece = tableSquare;
+                heldOrigin = i;
+                gameStart = true;
+            } else if(gameStart == true && tableSquare.isShown == 0){
+                tempSquare = tableSquare;
+                tempSquare.isShown = 1;
+                tempSquare.color = heldPiece.color;
+                squares[i] = tempSquare;
+                tempSquare = heldPiece;
+                tempSquare.isShown = 0;
+                squares[heldOrigin] = tempSquare;
+                gameStart = false;
             }
         }
     }
 }
-
-
