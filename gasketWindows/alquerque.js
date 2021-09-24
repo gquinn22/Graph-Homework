@@ -16,7 +16,7 @@ var curPlayer = 0;
 var colors = [
     vec4(0.0, 1.0, 0.0, 1.0), //green
     vec4(0.0, 0.0, 1.0, 1.0),  //blue
-    vec4(1.0, 0.0, 0.0, 1.0)
+    vec4(1.0, 0.0, 0.0, 1.0)  //red
 ];
 var vColorLoc;
 var heldPiece;
