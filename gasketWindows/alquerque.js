@@ -1,6 +1,6 @@
 /* Author: Griffin Quinn
- * Date: 9/15/21
- * Assignment: Assignment 1
+ * Date: 9/24/21
+ * Assignment: Assignment 2
  * Title: spiral.js
  * */
 var gl;
