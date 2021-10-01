@@ -1,7 +1,7 @@
 /* Author: Griffin Quinn
- * Date: 9/15/21
- * Assignment: Assignment 1
- * Title: spiral.js
+ * Date: 10/1/21
+ * Assignment: Assignment 3
+ * Title: flower.js
  * */
 var canvas;
 var gl;
@@ -29,7 +29,8 @@ window.onload = function init()
     gl.useProgram( program );
 
     triColor = vec4(1.0, 0.0, 0.0, 1.0);
-    square();
+
+    square(); //sets up vertices to use
     
     // Load the data into the GPU
 
@@ -68,21 +69,41 @@ function render() {
     gl.uniform4fv(vColorLoc, triColor);
     var mvMatrix = [];
 
-    mvMatrix = translate(0.0, 0.5, 0.0);
-    mvMatrix = mult(mvMatrix, scalem(0.5, 2.0, 1.0));
-    mvMatrix = mult(mvMatrix, rotate(-45.0, 0.0, 0.0, 1.0));
-    gl.uniformMatrix4fv(modelView, false, flatten(mvMatrix));
-    gl.drawArrays( gl.LINE_LOOP, 0, 4);
-    mvMatrix = mult(mvMatrix, translate(0.0, 0.1, 0.0));
+    //Draw out elements of flower at 30 degree iterations
+    for(var i = 0; i < 12; i++) {
 
-    for(var i = 1; i < 12; i++) {
-        //mvMatrix = rotate(-90.0, 0.0, 0.0, 1.0);
-        mvMatrix = mult(mvMatrix, translate(0.0, -0.5, 0.0));
-        //mvMatrix = mult(mvMatrix, rotate(-90.0, 0.0, 0.0, 1.0));
-        //mvMatrix = mult(mvMatrix, scalem(.5, 2.0, 1.0));
-        mvMatrix = mult(mvMatrix, rotate(-30*i, 0.0, 0.0, 1.0));
+        //Outer Petal, Drawn Clockwise
+        mvMatrix = rotate(i * -30.0, 0.0, 0.0, 1.0);
+        mvMatrix = mult(mvMatrix, scalem(.5, 2.5, 1.0));
+        mvMatrix = mult(mvMatrix, translate(0.0, 0.1 * Math.sqrt(2), 1.0));
+        mvMatrix = mult(mvMatrix, rotate(-45, 0.0, 0.0, 1.0));
         gl.uniformMatrix4fv(modelView, false, flatten(mvMatrix));
         gl.drawArrays( gl.LINE_LOOP, 0, 4);
+
+        //Inner Petal, Drawn Clockwise
+        mvMatrix = rotate(i * -30.0, 0.0, 0.0, 1);
+        mvMatrix = mult(mvMatrix, scalem(.25, 1.75, 1.0));
+        mvMatrix = mult(mvMatrix, translate(0.0, 0.1 * Math.sqrt(2), 1.0));
+        mvMatrix = mult(mvMatrix, rotate(-45, 0.0, 0.0, 1.0));
+        gl.uniformMatrix4fv(modelView, false, flatten(mvMatrix));
+        gl.drawArrays( gl.LINE_LOOP, 0, 4);
+
+        //Outer Squares
+        mvMatrix = rotate(i * -30.0 - 15.0, 0.0, 0.0, 1);
+        mvMatrix = mult(mvMatrix, translate(0.0, .8, 1.0));
+        gl.uniformMatrix4fv(modelView, false, flatten(mvMatrix));
+        gl.drawArrays( gl.LINE_LOOP, 0, 4);
+
+
+        //Outer Diamonds
+        mvMatrix = rotate(i * -30.0 - 15.0, 0.0, 0.0, 1);
+        mvMatrix = mult(mvMatrix, translate(0.0, 0.8, 1.0));
+        mvMatrix = mult(mvMatrix, scalem(Math.sqrt(.02)/.2, Math.sqrt(.02)/.2, 1.0));
+        mvMatrix = mult(mvMatrix, rotate(-45, 0.0, 0.0, 1.0));
+        gl.uniformMatrix4fv(modelView, false, flatten(mvMatrix));
+        gl.drawArrays( gl.LINE_LOOP, 0, 4);
+
+
     }
     window.requestAnimFrame(render);
 }
