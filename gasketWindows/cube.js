@@ -2,7 +2,7 @@
 var canvas;
 var gl;
 
-var NumVertices  = 36;
+var NumVertices  = 24;
 
 var points = [];
 var colors = [];
@@ -59,12 +59,15 @@ window.onload = function init()
     
     document.getElementById( "xButton" ).onclick = function () {
         axis = xAxis;
+        theta[axis] += 4.0;
     };
     document.getElementById( "yButton" ).onclick = function () {
         axis = yAxis;
+        theta[axis] += 4.0;
     };
     document.getElementById( "zButton" ).onclick = function () {
         axis = zAxis;
+        theta[axis] += 4.0;
     };
         
     render();
@@ -74,8 +77,8 @@ function colorCube()
 {
     quad( 1, 0, 3, 2 );
     quad( 2, 3, 7, 6 );
-    quad( 3, 0, 4, 7 );
-    quad( 6, 5, 1, 2 );
+    //quad( 3, 0, 4, 7 );
+    //quad( 6, 5, 1, 2 );
     quad( 4, 5, 6, 7 );
     quad( 5, 4, 0, 1 );
 }
@@ -83,25 +86,25 @@ function colorCube()
 function quad(a, b, c, d) 
 {
     var vertices = [
-        vec4( -0.5, -0.5,  0.5, 1.0 ),
-        vec4( -0.5,  0.5,  0.5, 1.0 ),
-        vec4(  0.5,  0.5,  0.5, 1.0 ),
-        vec4(  0.5, -0.5,  0.5, 1.0 ), //op 0
-        vec4( -0.5, -0.5, -0.5, 1.0 ),
-        vec4( -0.5,  0.5, -0.5, 1.0 ), //set opacity to 0 
-        vec4(  0.5,  0.5, -0.5, 1.0 ),
-        vec4(  0.5, -0.5, -0.5, 1.0 )
+        vec4( -0.5, -0.5,  0.5, 1.0 ), //0
+        vec4( -0.5,  0.5,  0.5, 1.0 ), //1
+        vec4(  0.5,  0.5,  0.5, 1.0 ), //2
+        vec4(  0.5, -0.5,  0.5, 1.0 ), //3
+        vec4( -0.5, -0.5, -0.5, 1.0 ), //4
+        vec4( -0.5,  0.5, -0.5, 1.0 ), //5
+        vec4(  0.5,  0.5, -0.5, 1.0 ), //6
+        vec4(  0.5, -0.5, -0.5, 1.0 )  //7
     ];
 
     var vertexColors = [
-        [ 0.0, 0.0, 0.0, 1.0 ],  // black
-        [ 1.0, 0.0, 0.0, 1.0 ],  // red
-        [ 1.0, 1.0, 0.0, 1.0 ],  // yellow
-        [ 0.0, 1.0, 0.0, 1.0 ],  // green
-        [ 0.0, 0.0, 1.0, 1.0 ],  // blue
-        [ 1.0, 0.0, 1.0, 1.0 ],  // magenta
-        [ 0.0, 1.0, 1.0, 1.0 ],  // cyan
-        [ 1.0, 1.0, 1.0, 1.0 ]   // white
+        [ 0.0, 0.0, 0.0, 1.0 ],  // black 0
+        [ 1.0, 0.0, 0.0, 1.0 ],  // red 1
+        [ 1.0, 1.0, 0.0, 1.0 ],  // yellow 2
+        [ 0.0, 1.0, 0.0, 1.0 ],  // green bottom 3
+        [ 0.0, 0.0, 1.0, 1.0 ],  // blue 4
+        [ 1.0, 0.0, 1.0, 1.0 ],  // magenta 5
+        [ 0.0, 1.0, 1.0, 1.0 ],  // cyan top 6
+        [ 1.0, 1.0, 1.0, 1.0 ]   // white 7
     ];
 
     // We need to parition the quad into two triangles in order for
@@ -126,7 +129,7 @@ function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    theta[axis] += 2.0;
+    //theta[axis] += 2.0;
     gl.uniform3fv(thetaLoc, theta);
 
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
