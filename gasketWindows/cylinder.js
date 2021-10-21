@@ -96,6 +96,9 @@ function quad(a, b, c, d)
         vec4(  0.5, -0.5, -0.5, 1.0 )  //7
     ];
 
+    vertices = normalize(vertices);
+
+
     var vertexColors = [
         [ 1.0, 0.0, 0.0, 1.0 ],  // black 0
         [ 0.0, 0.0, 1.0, 1.0 ],  // red 1 [ 1.0, 0.0, 0.0, 1.0 ] back
@@ -137,9 +140,18 @@ function render()
 
 function normalize(array)
 {
-    d = .5 * math.sqrt(2);
+    d = .5 * Math.sqrt(2);
+    var x, y, z, xn, zn, coeff;
     for(var i = 0; i < array.length; i++){
-        
-    }
+        x = array[i][0];
+        y = array[i][1];
+        z = array[i][2];
+        coeff = d / Math.sqrt(x*x + z*z);
+        xn = x * coeff;
+        zn = z * coeff;
 
+        array[i] = vec4(xn, y, zn, 1.0);
+
+    }
+    return array;
 }
