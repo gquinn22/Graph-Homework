@@ -55,17 +55,22 @@ window.onload = function init()
 
     thetaLoc = gl.getUniformLocation(program, "theta"); 
     
-    //event listeners for buttons
+    window.onkeydown = function(event){
+        var key = String.fromCharCode(event.keyCode);
+        switch(key){
+            case 'F':
+                theta[xAxis] += 2.0;
+                break;
+            case 'J': 
+                theta[yAxis] += 2.0;
+                break;
+            case 'K': 
+                theta[zAxis] += 2.0;
+                break;
+        }
+    }
     
-    document.getElementById( "xButton" ).onclick = function () {
-        axis = xAxis;
-    };
-    document.getElementById( "yButton" ).onclick = function () {
-        axis = yAxis;
-    };
-    document.getElementById( "zButton" ).onclick = function () {
-        axis = zAxis;
-    };
+    
         
     render();
 }
@@ -123,7 +128,6 @@ function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    theta[axis] += 2.0;
     gl.uniform3fv(thetaLoc, theta);
 
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
