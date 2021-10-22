@@ -1,3 +1,8 @@
+/* Author: Griffin Quinn
+Date: 10/22/21
+Title: cylinder.js */
+
+
 "use strict";
 
 var canvas;

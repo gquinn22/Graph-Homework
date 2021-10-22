@@ -1,4 +1,6 @@
-
+/* Author: Griffin Quinn
+Date: 10/22/21
+Title: box.js */
 var canvas;
 var gl;
 
