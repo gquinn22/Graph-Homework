@@ -4,7 +4,7 @@ var canvas;
 var gl;
 
 var NumVertices;
-var count = 3;
+var count = 5;
 var dSQ = .5 * Math.sqrt(2);
 
 var points = [];
@@ -34,12 +34,6 @@ var vertices = [
 var vertexColors = [
     [ 1.0, 0.0, 0.0, 1.0 ],  // black 0
     [ 0.0, 0.0, 1.0, 1.0 ],  // red 1 [ 1.0, 0.0, 0.0, 1.0 ] back
-    [ 1.0, 0.0, 0.0, 1.0 ],  // yellow 2 right
-    [ 0.0, 0.0, 1.0, 1.0 ],  // green bottom 3
-    [ 0.0, 0.0, 1.0, 1.0 ],  // blue 4 [ 0.0, 0.0, 1.0, 1.0 ] front
-    [ 1.0, 0.0, 0.0, 1.0 ],  // magenta 5 left
-    [ 1.0, 0.0, 0.0, 1.0 ], 
-    [ 0.0, 0.0, 1.0, 1.0 ],  // cyan top 6
 ];
 
 window.onload = function init()
@@ -49,10 +43,8 @@ window.onload = function init()
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
-    //colorCube();
     callCylinder();
     NumVertices = points.length;
-    console.log( points);
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
@@ -99,73 +91,32 @@ window.onload = function init()
         }
     }
     
-    
-        
+      
     render();
 }
 
-/*function colorCube()
+function quad(a, b, c, d, rgb) 
 {
-    quad( 1, 0, 3, 2 );
-    quad( 2, 3, 7, 6 );
-    quad( 4, 5, 6, 7 );
-    quad( 5, 4, 0, 1 );
-}*/
-
-/*function quad(a, b, c, d) 
-{
-    var vertexColors = [
-        [ 1.0, 0.0, 0.0, 1.0 ],  // black 0
-        [ 0.0, 0.0, 1.0, 1.0 ],  // red 1 [ 1.0, 0.0, 0.0, 1.0 ] back
-        [ 1.0, 0.0, 0.0, 1.0 ],  // yellow 2 right
-        [ 0.0, 1.0, 0.0, 1.0 ],  // green bottom 3
-        [ 0.0, 0.0, 1.0, 1.0 ],  // blue 4 [ 0.0, 0.0, 1.0, 1.0 ] front
-        [ 1.0, 0.0, 0.0, 1.0 ],  // magenta 5 left 
-        [ 0.0, 1.0, 1.0, 1.0 ],  // cyan top 6
-    ];
-
-    // We need to parition the quad into two triangles in order for
-    // WebGL to be able to render it.  In this case, we create two
-    // triangles from the quad indices
-    
-    //vertex color assigned by the index of the vertex
-    
     var indices = [ a, b, c, a, c, d ];
 
     for ( var i = 0; i < indices.length; ++i ) {
-        points.push( vertices[indices[i]] );
-        //colors.push( vertexColors[indices[i]] );
-    
-        // for solid colored faces use 
-        colors.push(vertexColors[a]);
-        
+
+        points.push( indices[i] );
+        colors.push(vertexColors[rgb]);
     }
-}*/
+}
 
 
 function callCylinder()
 {
     divide_quad(vertices[1], vertices[0], vertices [3], vertices[2], count, 0);
-    divide_quad(vertices[2], vertices[3], vertices [7], vertices[6], count, 1);
+    divide_quad(vertices[2], vertices[3], vertices [7], vertices[6], count, 0);
     divide_quad(vertices[4], vertices[5], vertices [6], vertices[7], count, 0);
-    divide_quad(vertices[5], vertices[4], vertices [0], vertices[1], count, 1);
+    divide_quad(vertices[5], vertices[4], vertices [0], vertices[1], count, 0);
 }
 
 function normalize(vector)
 {
-    /*var x, y, z, d, xn, zn, coeff, normVec;
-    d = .5 * Math.sqrt(2);
-    x = vector[0];
-    y = vector[1];
-    z = vector[2];
-    coeff = d / Math.sqrt(x*x + z*z);
-    xn = x * coeff;
-    zn = z * coeff;
-
-    normVec = vec4(xn, y, zn, 1.0);
-    
-    return normVec;*/
-
     var r = Math.sqrt(vector[0]*vector[0]+vector[2]*vector[2]);
     var normVec = vec4((vector[0]*dSQ) / r, vector[1], (vector[2]*dSQ) / r, 1.0);
     return normVec;
@@ -187,17 +138,7 @@ function divide_quad(a, b, c, d, num, rgb)
         divide_quad(mid2, mid1, c, d, num - 1, 1);
 
     } else{ 
-        //this will mimic a call to quad, but to handle a different 'a', we will have to adjust
-        var indices = [ a, b, c, a, c, d ];
-
-        for ( var i = 0; i < indices.length; ++i ) {
-
-            points.push( indices[i] );
-            //colors.push( vertexColors[indices[i]] );
-            // for solid colored faces use 
-            colors.push(vertexColors[rgb]);
-        
-        }
+        quad(a, b, c, d, rgb);
     }
 }
 
