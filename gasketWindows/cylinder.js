@@ -5,7 +5,6 @@ var gl;
 
 var NumVertices;
 var count = 5;
-var dSQ = .5 * Math.sqrt(2);
 
 var points = [];
 var colors = [];
@@ -117,6 +116,7 @@ function callCylinder()
 
 function normalize(vector)
 {
+    var dSQ = .5 * Math.sqrt(2);
     var r = Math.sqrt(vector[0]*vector[0]+vector[2]*vector[2]);
     var normVec = vec4((vector[0]*dSQ) / r, vector[1], (vector[2]*dSQ) / r, 1.0);
     return normVec;
