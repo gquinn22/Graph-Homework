@@ -1,9 +1,11 @@
 "use strict";
+
 var canvas;
 var gl;
 
-var NumVertices  = 0;
-var count = 2;
+var NumVertices;
+var count = 3;
+var dSQ = .5 * Math.sqrt(2);
 
 var points = [];
 var colors = [];
@@ -33,10 +35,11 @@ var vertexColors = [
     [ 1.0, 0.0, 0.0, 1.0 ],  // black 0
     [ 0.0, 0.0, 1.0, 1.0 ],  // red 1 [ 1.0, 0.0, 0.0, 1.0 ] back
     [ 1.0, 0.0, 0.0, 1.0 ],  // yellow 2 right
-    [ 0.0, 1.0, 0.0, 1.0 ],  // green bottom 3
+    [ 0.0, 0.0, 1.0, 1.0 ],  // green bottom 3
     [ 0.0, 0.0, 1.0, 1.0 ],  // blue 4 [ 0.0, 0.0, 1.0, 1.0 ] front
-    [ 1.0, 0.0, 0.0, 1.0 ],  // magenta 5 left 
-    [ 0.0, 1.0, 1.0, 1.0 ],  // cyan top 6
+    [ 1.0, 0.0, 0.0, 1.0 ],  // magenta 5 left
+    [ 1.0, 0.0, 0.0, 1.0 ], 
+    [ 0.0, 0.0, 1.0, 1.0 ],  // cyan top 6
 ];
 
 window.onload = function init()
@@ -49,6 +52,7 @@ window.onload = function init()
     //colorCube();
     callCylinder();
     NumVertices = points.length;
+    console.log( points);
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
@@ -108,7 +112,7 @@ window.onload = function init()
     quad( 5, 4, 0, 1 );
 }*/
 
-function quad(a, b, c, d) 
+/*function quad(a, b, c, d) 
 {
     var vertexColors = [
         [ 1.0, 0.0, 0.0, 1.0 ],  // black 0
@@ -136,20 +140,20 @@ function quad(a, b, c, d)
         colors.push(vertexColors[a]);
         
     }
-}
+}*/
 
 
 function callCylinder()
 {
-    divide_quad(vertices[1], vertices[0], vertices [3], vertices[2], count, 3);
+    divide_quad(vertices[1], vertices[0], vertices [3], vertices[2], count, 0);
     divide_quad(vertices[2], vertices[3], vertices [7], vertices[6], count, 1);
-    divide_quad(vertices[4], vertices[5], vertices [6], vertices[7], count, 3);
+    divide_quad(vertices[4], vertices[5], vertices [6], vertices[7], count, 0);
     divide_quad(vertices[5], vertices[4], vertices [0], vertices[1], count, 1);
 }
 
 function normalize(vector)
 {
-    var x, y, z, d, xn, zn, coeff, normVec;
+    /*var x, y, z, d, xn, zn, coeff, normVec;
     d = .5 * Math.sqrt(2);
     x = vector[0];
     y = vector[1];
@@ -160,6 +164,10 @@ function normalize(vector)
 
     normVec = vec4(xn, y, zn, 1.0);
     
+    return normVec;*/
+
+    var r = Math.sqrt(vector[0]*vector[0]+vector[2]*vector[2]);
+    var normVec = vec4((vector[0]*dSQ) / r, vector[1], (vector[2]*dSQ) / r, 1.0);
     return normVec;
 }
 
@@ -175,7 +183,7 @@ function divide_quad(a, b, c, d, num, rgb)
         vertices.push(mid1);
         vertices.push(mid2);
 
-        divide_quad(a, b, mid1, mid2, num - 1, 1);
+        divide_quad(a, b, mid1, mid2, num - 1, 0);
         divide_quad(mid2, mid1, c, d, num - 1, 1);
 
     } else{ 
@@ -183,9 +191,9 @@ function divide_quad(a, b, c, d, num, rgb)
         var indices = [ a, b, c, a, c, d ];
 
         for ( var i = 0; i < indices.length; ++i ) {
-            points.push( vertices[indices[i]] );
+
+            points.push( indices[i] );
             //colors.push( vertexColors[indices[i]] );
-    
             // for solid colored faces use 
             colors.push(vertexColors[rgb]);
         
