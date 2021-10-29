@@ -2,21 +2,34 @@
 var canvas;
 var gl;
 
-var NumVertices  = 24;
+var cBuffer;
+var modelView, projection;
+var mvMatrix, pMatrix;
+
+var light = vec3(0.0, 250.0, -50.0);
+
+var shadowColors = [];
 
 var points = [];
 var colors = [];
 var vertices = [
-    vec3( 0, 100,  0 ),
-    vec3( 0,  0,  100 ), //a
-    vec3( -100,  0,  0 ), //b 1, 2, 0; 2, 3, 0; 3, 4, 0; 4, 1, 0
-    vec3(  0, 0,  -100),  //c
-    vec3( 100, 0, 0 ) //d
+    vec3( -50, -50,  50 ),
+    vec3( -50,  50,  50 ),
+    vec3(  50,  50,  50 ),
+    vec3(  50, -50,  50 ),
+    vec3( -50, -50, -50 ),
+    vec3( -50,  50, -50 ),
+    vec3(  50,  50, -50 ),
+    vec3(  50, -50, -50 )
 ];
 
 var vertexColors = [
     [ 1.0, 0.0, 0.0, 1.0 ],  // red
     [ 0.0, 0.0, 1.0, 1.0 ],  // blue
+    [ 0.0, 1.0, 0.0, 1.0 ],  // green
+    [ 1.0, 1.0, 0.0, 1.0 ],  // yellow
+    [ 0.0, 1.0, 1.0, 1.0 ],  // cyan
+    [ 1.0, 0.0, 1.0, 1.0 ]   // magenta
 ];
 
 var xAxis = 0;
@@ -25,13 +38,7 @@ var zAxis = 2;
 
 var axis = 0;
 var theta = [ 0, 0, 0 ];
-var pMatrix;
-var projection;
-
-var xTran = 0;
-var yTran = 0;
-var zTran = 0;
-
+var m;
 
 var thetaLoc;
 
@@ -41,6 +48,10 @@ window.onload = function init()
     
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
+
+    m = mat4();
+    m[3][3] = 0;
+    m[3][1] = -1/light[1];
 
     drawBox();
 
@@ -55,7 +66,7 @@ window.onload = function init()
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
     
-    var cBuffer = gl.createBuffer();
+    cBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW );
 
@@ -73,7 +84,9 @@ window.onload = function init()
 
     modelView = gl.getUniformLocation( program, "modelView" );
     projection = gl.getUniformLocation( program, "projection" );
-    
+    pMatrix = ortho(-250, 250, -250, 250, -250, 250);
+    gl.uniformMatrix4fv( projection, false, flatten(pMatrix) );
+
     window.onkeydown = keyResponse;
         
     render();
@@ -105,34 +118,19 @@ function keyResponse(event) {
 		case '6':
 			axis = zAxis;
 			theta[axis] -= 2.0;
-            break;
-        case 'F':
-            zTran++;
-            break;
-		case 'B':
-			zTran--;
-			break;
-		case 'U':
-			yTran++
-			break;
-		case 'D':
-			yTran--;
-			break;
-		case 'R':
-			xTran++;
-			break;
-		case 'L':
-			xTran--;
 	}
 }
 
 function drawBox()
 {
-    quad( vertices[1], vertices[2], vertices[3], vertices[4], vertexColors[0] );
-    triangle( vertices[1], vertices[2], vertices[0], vertexColors[1] );
-    triangle( vertices[2], vertices[3], vertices[0], vertexColors[0] );
-    triangle( vertices[3], vertices[4], vertices[0], vertexColors[1] );
-    triangle( vertices[4], vertices[1], vertices[0], vertexColors[0] );
+    quad( vertices[1], vertices[0], vertices[3], vertices[2], vertexColors[0] );
+    quad( vertices[2], vertices[3], vertices[7], vertices[6], vertexColors[1] );
+    quad( vertices[4], vertices[5], vertices[6], vertices[7], vertexColors[2] );
+    quad( vertices[5], vertices[4], vertices[0], vertices[1], vertexColors[3] );
+    quad( vertices[1], vertices[2], vertices[6], vertices[5], vertexColors[4] );
+    quad( vertices[0], vertices[4], vertices[7], vertices[3], vertexColors[5] );
+
+
 }
 
 function quad(a, b, c, d, color) 
@@ -148,31 +146,9 @@ function quad(a, b, c, d, color)
 
     for ( var i = 0; i < indices.length; ++i ) {
         points.push( indices[i] );
-        //colors.push( vertexColors[indices[i]] );
-    
-        // for solid colored faces use 
         colors.push(color);
-        
-    }
-}
+        shadowColors.push(vec4(0.3, 0.3, 0.3, 1.0));
 
-function triangle(a, b, c, color) 
-{
-
-    // We need to parition the quad into two triangles in order for
-    // WebGL to be able to render it.  In this case, we create two
-    // triangles from the quad indices
-    
-    //vertex color assigned by the index of the vertex
-    
-    var indices = [ a, b, c];
-
-    for ( var i = 0; i < indices.length; ++i ) {
-        points.push( indices[i] );
-        //colors.push( vertexColors[indices[i]] );
-    
-        // for solid colored faces use 
-        colors.push(color);
         
     }
 }
@@ -182,20 +158,33 @@ function render()
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     mvMatrix = mat4( );
-    mvMatrix = mult(mvMatrix, translate(xTran, yTran, zTran, 0));
-    mvMatrix = mult(mvMatrix, translate(0, 0, -300, 0));
+    mvMatrix = mult(mvMatrix, rotate(30.0, 1.0, 0.0, 0.0));
+    mvMatrix = mult(mvMatrix, translate(0.0, 100.0, 0.0, 0.0));
     mvMatrix = mult(mvMatrix, rotate(theta[0], 1.0, 0.0, 0.0));
     mvMatrix = mult(mvMatrix, rotate(theta[1], 0.0, 1.0, 0.0));
     mvMatrix = mult(mvMatrix, rotate(theta[2], 0.0, 0.0, 1.0));
-    pMatrix = perspective(45, 1.0, 1.0, 500.0);
 
 	gl.uniformMatrix4fv( modelView, false, flatten(mvMatrix) );
-    gl.uniformMatrix4fv( projection, false, flatten(pMatrix) );
 
-    gl.drawArrays(gl.TRIANGLES, 0, points.length); 
+    gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
+	gl.bufferData( gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW );
 	
+    gl.drawArrays( gl.TRIANGLES, 0, points.length );
 
+    mvMatrix = mat4( );
+    mvMatrix = mult(mvMatrix, rotate(30.0, 1.0, 0.0, 0.0));
+    mvMatrix = mult(mvMatrix, translate(light[0], light[1], light[2], 0.0));
+    mvMatrix = mult(mvMatrix, m);
+    mvMatrix = mult(mvMatrix, translate(-light[0], -light[1], -light[2], 0.0));
+    mvMatrix = mult(mvMatrix, translate(0.0, 100.0, 0.0, 0.0));
+    mvMatrix = mult(mvMatrix, rotate(theta[0], 1.0, 0.0, 0.0));
+    mvMatrix = mult(mvMatrix, rotate(theta[1], 0.0, 1.0, 0.0));
+    mvMatrix = mult(mvMatrix, rotate(theta[2], 0.0, 0.0, 1.0));
 
+    gl.uniformMatrix4fv( modelView, false, flatten(mvMatrix) );
+    gl.bindBuffer( gl.ARRAY_BUFFER, cBuffer );
+	gl.bufferData( gl.ARRAY_BUFFER, flatten(shadowColors), gl.STATIC_DRAW );
+    gl.drawArrays( gl.TRIANGLES, 0, points.length );
     requestAnimFrame( render );
 }
 
