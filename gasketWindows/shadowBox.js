@@ -1,4 +1,9 @@
-
+/*
+Author: Griffin Quinn
+Assignment: Assignment 5
+Date: 10/29/21
+Title: shadowBox.js
+*/
 var canvas;
 var gl;
 
