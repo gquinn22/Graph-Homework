@@ -1,4 +1,6 @@
-
+/* Author: Griffin Quinn
+Date: 11/5/21
+shadedCube.js*/
 
 var canvas;
 var gl;
