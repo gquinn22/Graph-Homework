@@ -25,7 +25,11 @@ var vertices = [
         vec4( 0.5, -0.5, -0.5, 1.0 )   //back bot right
     ];
 
+<<<<<<< Updated upstream
 var verticesBoard = [
+=======
+    var verticesBoard = [
+>>>>>>> Stashed changes
       vec4( -0.5, -0.1,  0.5, 1.0 ), //front bot left
       vec4( -0.5,  0.1,  0.5, 1.0 ), //front top left
       vec4( 0.5,  0.1,  0.5, 1.0 ), //front top right
@@ -131,6 +135,24 @@ function colorBoard()
     quadBoard( 5, 4, 0, 1 );
 }
 
+<<<<<<< Updated upstream
+=======
+// function configureTexture() configures the texture for use
+function configureTexture( image, id ) {
+   texture[id] = gl.createTexture();
+   gl.bindTexture( gl.TEXTURE_2D, texture[id] );
+   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+   gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB, 
+        gl.RGB, gl.UNSIGNED_BYTE, image );
+   gl.generateMipmap( gl.TEXTURE_2D );
+   gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
+                     gl.NEAREST_MIPMAP_LINEAR );
+   gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+   
+   gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
+}
+
+>>>>>>> Stashed changes
 
 window.onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
@@ -194,6 +216,11 @@ window.onload = function init() {
     
     gl.uniformMatrix4fv( gl.getUniformLocation(program, "projectionMatrix"),
        false, flatten(projection));
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 
     window.onkeydown = keyResponse;
     
