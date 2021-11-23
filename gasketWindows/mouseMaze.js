@@ -15,10 +15,6 @@ var pointsArray = [];
 var points = [];
 var normalsArray = [];
 
-var xTran = 0;
-var yTran = 0;
-var zTran = 0;
-
 var vertices = [
         vec4( -0.5, -0.5,  0.5, 1.0 ), //front bot left
         vec4( -0.5,  0.5,  0.5, 1.0 ), //front top left
@@ -29,17 +25,6 @@ var vertices = [
         vec4( 0.5,  0.5, -0.5, 1.0 ),  //back top right
         vec4( 0.5, -0.5, -0.5, 1.0 )   //back bot right
     ];
-
-var verticesBoard = [
-      vec4( -0.5, -0.1,  0.5, 1.0 ), //front bot left
-      vec4( -0.5,  0.1,  0.5, 1.0 ), //front top left
-      vec4( 0.5,  0.1,  0.5, 1.0 ), //front top right
-      vec4( 0.5, -0.1,  0.5, 1.0 ), //front bot right
-      vec4( -0.5, -0.1, -0.5, 1.0 ), //back bot left
-      vec4( -0.5,  0.1, -0.5, 1.0 ), //back top left
-      vec4( 0.5,  0.1, -0.5, 1.0 ),  //back top right
-      vec4( 0.5, -0.1, -0.5, 1.0 )   //back bot right
-  ];
 
 var lightPosition = vec4(1.0, 1.0, 1.0, 0.0 );
 var lightPosition2 = vec4(1.0, -1.0, 1.0, 0.0 );
@@ -95,26 +80,6 @@ function quad(a, b, c, d) {
      normalsArray.push(normal);    
 }
 
-function quadBoard(a, b, c, d) {
-   var t1 = subtract(verticesBoard[b], verticesBoard[a]);
-   var t2 = subtract(verticesBoard[c], verticesBoard[a]);
-   var normal = cross(t1, t2);
-   var normal = vec3(normal);
-
-   pointsArray.push(verticesBoard[a]); 
-   normalsArray.push(normal); 
-   pointsArray.push(verticesBoard[b]); 
-   normalsArray.push(normal); 
-   pointsArray.push(verticesBoard[c]); 
-   normalsArray.push(normal);   
-   pointsArray.push(verticesBoard[a]);  
-   normalsArray.push(normal); 
-   pointsArray.push(verticesBoard[c]); 
-   normalsArray.push(normal); 
-   pointsArray.push(verticesBoard[d]); 
-   normalsArray.push(normal);    
-}
-
 
 function colorCube()
 {
@@ -126,6 +91,7 @@ function colorCube()
     quad( 5, 4, 0, 1 );
 }
 
+<<<<<<< HEAD
 function colorBoard()
 {
     quadBoard( 1, 0, 3, 2 );
@@ -151,6 +117,8 @@ function configureTexture( image, id ) {
    gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 }
 
+=======
+>>>>>>> parent of 7950b32 (Update mouseMaze.js)
 
 window.onload = function init() {
     canvas = document.getElementById( "gl-canvas" );
@@ -170,7 +138,6 @@ window.onload = function init() {
     gl.useProgram( program );
     
     colorCube();
-    colorBoard();
 
     var nBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, nBuffer );
@@ -214,35 +181,22 @@ window.onload = function init() {
     
     gl.uniformMatrix4fv( gl.getUniformLocation(program, "projectionMatrix"),
        false, flatten(projection));
+<<<<<<< HEAD
 
 
 
     window.onkeydown = keyResponse;
+=======
+>>>>>>> parent of 7950b32 (Update mouseMaze.js)
     
     render();
-}
-
-function keyResponse(event) {
-	var key = String.fromCharCode(event.keyCode);
-	switch (key) {
-      case 'W':
-         yTran+= .01;
-         break;
-		case 'S':
-			yTran-= .01;
-			break;
-		case 'D':
-			xTran+= .01;
-			break;
-		case 'A':
-			xTran-= .01;
-	}
 }
 
 var render = function(){
             
    gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
             
+   if(flag) theta[axis] += 2.0;
 
    setLightProducts(ambientProduct, diffuseProduct, specularProduct);
    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition) );
@@ -261,24 +215,25 @@ var render = function(){
 	gl.drawArrays( gl.TRIANGLES, 0, pointsArray.length );
             
    modelView = mat4();
-   modelView = mult(modelView, rotate(45, [1, 0, 0] ));
-   modelView = mult(modelView, translate(0, -.5, 0, 1));
-   //modelView = mult(modelView, rotate(theta[yAxis], [0, 1, 0] ));
-   //modelView = mult(modelView, rotate(theta[zAxis], [0, 0, 1] ));
+   modelView = mult(modelView, translate(0, 0, 0, 1));
+   modelView = mult(modelView, scalem(1, .1, .5));
+   modelView = mult(modelView, rotate(theta[xAxis], [1, 0, 0] ));
+   modelView = mult(modelView, rotate(theta[yAxis], [0, 1, 0] ));
+   modelView = mult(modelView, rotate(theta[zAxis], [0, 0, 1] ));
     
    gl.uniformMatrix4fv( gl.getUniformLocation(program, 
       "modelViewMatrix"), false, flatten(modelView) );
-   gl.drawArrays( gl.TRIANGLES, numVertices, numVertices);
+   gl.drawArrays( gl.TRIANGLES, 0, numVertices );
 
    setLightProducts(ambientProduct2, diffuseProduct2, specularProduct2);
    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition) );
 
    modelView = mat4();
-   modelView = mult(modelView, translate(xTran, yTran, zTran, 1));
-   modelView = mult(modelView, translate(0, .2, 0, 1));
+   modelView = mult(modelView, translate(0, .1, 0, 1));
    modelView = mult(modelView, scalem(.1, .1, .1));
-   modelView = mult(modelView, rotate(-45, [1, 0, 0] ));
-   
+   modelView = mult(modelView, rotate(theta[xAxis], [1, 0, 0] ));
+   modelView = mult(modelView, rotate(theta[yAxis], [0, 1, 0] ));
+   modelView = mult(modelView, rotate(theta[zAxis], [0, 0, 1] ));
 
    gl.uniformMatrix4fv( gl.getUniformLocation(program, 
       "modelViewMatrix"), false, flatten(modelView) );
