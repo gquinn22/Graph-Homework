@@ -12,6 +12,7 @@ var texture = [ ];  // array of textures
 var numVertices  = 36;
 
 var pointsArray = [];
+var points = [];
 var normalsArray = [];
 
 var xTran = 0;
@@ -263,7 +264,7 @@ var render = function(){
 
 	gl.bindTexture( gl.TEXTURE_2D, texture[0] );
 		// one texture per side
-	gl.drawArrays( gl.TRIANGLES, 0, points.length );
+	gl.drawArrays( gl.TRIANGLES, 0, pointsArray.length );
             
    modelView = mat4();
    modelView = mult(modelView, rotate(45, [1, 0, 0] ));
