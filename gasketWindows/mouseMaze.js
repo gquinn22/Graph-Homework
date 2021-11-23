@@ -11,14 +11,14 @@ var pointsArray = [];
 var normalsArray = [];
 
 var vertices = [
-        vec4( -0.5, -0.5,  0.5, 1.0 ),
-        vec4( -0.5,  0.5,  0.5, 1.0 ),
-        vec4( 0.5,  0.5,  0.5, 1.0 ),
-        vec4( 0.5, -0.5,  0.5, 1.0 ),
-        vec4( -0.5, -0.5, -0.5, 1.0 ),
-        vec4( -0.5,  0.5, -0.5, 1.0 ),
-        vec4( 0.5,  0.5, -0.5, 1.0 ),
-        vec4( 0.5, -0.5, -0.5, 1.0 )
+        vec4( -0.5, -0.5,  0.5, 1.0 ), //front bot left
+        vec4( -0.5,  0.5,  0.5, 1.0 ), //front top left
+        vec4( 0.5,  0.5,  0.5, 1.0 ), //front top right
+        vec4( 0.5, -0.5,  0.5, 1.0 ), //front bot right
+        vec4( -0.5, -0.5, -0.5, 1.0 ), //back bot left
+        vec4( -0.5,  0.5, -0.5, 1.0 ), //back top left
+        vec4( 0.5,  0.5, -0.5, 1.0 ),  //back top right
+        vec4( 0.5, -0.5, -0.5, 1.0 )   //back bot right
     ];
 
 var lightPosition = vec4(1.0, 1.0, 1.0, 0.0 );
@@ -162,8 +162,8 @@ var render = function(){
    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition) );
             
    modelView = mat4();
-   modelView = mult(modelView, translate(-.5, 0, 0, 1));
-   modelView = mult(modelView, scalem(.5, .5, .5));
+   modelView = mult(modelView, translate(0, 0, 0, 1));
+   modelView = mult(modelView, scalem(1, .1, .5));
    modelView = mult(modelView, rotate(theta[xAxis], [1, 0, 0] ));
    modelView = mult(modelView, rotate(theta[yAxis], [0, 1, 0] ));
    modelView = mult(modelView, rotate(theta[zAxis], [0, 0, 1] ));
@@ -176,8 +176,8 @@ var render = function(){
    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition) );
 
    modelView = mat4();
-   modelView = mult(modelView, translate(.5, 0, 0, 1));
-   modelView = mult(modelView, scalem(.5, .5, .5));
+   modelView = mult(modelView, translate(0, .1, 0, 1));
+   modelView = mult(modelView, scalem(.1, .1, .1));
    modelView = mult(modelView, rotate(theta[xAxis], [1, 0, 0] ));
    modelView = mult(modelView, rotate(theta[yAxis], [0, 1, 0] ));
    modelView = mult(modelView, rotate(theta[zAxis], [0, 0, 1] ));
