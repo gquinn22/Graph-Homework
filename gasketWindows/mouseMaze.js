@@ -215,13 +215,7 @@ window.onload = function init() {
     gl.uniformMatrix4fv( gl.getUniformLocation(program, "projectionMatrix"),
        false, flatten(projection));
 
-   // initialize textures
-	 initializeTexture(image, "cheese.jpg", 0);
-	
-    thetaLoc = gl.getUniformLocation(program, "theta");
-  
-    modelView = gl.getUniformLocation( program, "modelView" );
-    projection = gl.getUniformLocation( program, "projection" );
+
 
     window.onkeydown = keyResponse;
     
